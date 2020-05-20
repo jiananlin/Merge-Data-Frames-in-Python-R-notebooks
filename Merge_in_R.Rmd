@@ -1,0 +1,83 @@
+---
+title: "Merge in R"
+author: "Jianan Lin"
+date: "5/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(knitr)
+```
+
+
+## Read data frames
+
+
+```{r}
+df1 = read.csv("iverson.test.csv",row.names = 1)
+df2 = read.csv("mcgrady.test.csv",row.names = 1)
+```
+
+
+## Head of data frames
+
+```{r}
+head(df1)
+```
+
+```{r}
+head(df2)
+```
+
+
+## Merge dataframes
+
+There are four types of merging: inner join, outer join, left join and right join.
+
+
+### inner join
+```{r}
+df_m1 = merge(df1,df2,all.x = F,all.y = F, by.x = "Season", by.y = "Season")
+kable(df_m1,caption = "inner join")
+```
+
+### outer join
+```{r}
+df_m1 = merge(df1,df2,all.x = T,all.y = T, by.x = "Season", by.y = "Season")
+kable(df_m1,caption = "outer join")
+```
+
+### left join
+```{r}
+df_m1 = merge(df1,df2,all.x = T,all.y = F, by.x = "Season", by.y = "Season")
+kable(df_m1,caption = "left join")
+```
+
+### right join
+```{r}
+df_m1 = merge(df1,df2,all.x = F,all.y = T, by.x = "Season", by.y = "Season")
+kable(df_m1,caption = "right join")
+```
+
+## Merge on Multiple Columns.
+
+```{r}
+df_m_m = merge(df1,df2,all.x = F,all.y = F, by.x = c("Season","Pos"), by.y = c("Season","Pos"))
+kable(df_m_m,caption = "merge on multiple columns")
+```
+
+## Merge Multiple Data Frames.
+
+```{r}
+df3 = read.csv("kobe.test.csv",row.names = 1)
+df_all = Reduce(function(x,y) merge(x,y,all.x = F, all.y = F, by.x = "Season", by.y = "Season"), list(df1,df2,df3))
+kable(df_all,caption = "merge multiple data frames")
+```
+
+
+
+
